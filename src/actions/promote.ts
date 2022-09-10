@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import * as deploy from './deploy'
+import * as deploymentHelper from '../strategyHelpers/deploymentHelper'
 import * as canaryDeploymentHelper from '../strategyHelpers/canary/canaryHelper'
 import * as SMICanaryDeploymentHelper from '../strategyHelpers/canary/smiCanaryHelper'
 import {
@@ -73,7 +73,7 @@ async function promoteCanary(kubectl: Kubectl, manifests: string[]) {
       core.endGroup()
 
       core.startGroup('Deploying input manifests with SMI canary strategy')
-      await deploy.deploy(kubectl, manifests, DeploymentStrategy.CANARY)
+      await deploymentHelper.deployManifests(manifests, DeploymentStrategy.CANARY, kubectl, trafficSplitMethod)
       core.endGroup()
 
       core.startGroup('Redirecting traffic to stable deployment')
@@ -84,7 +84,7 @@ async function promoteCanary(kubectl: Kubectl, manifests: string[]) {
       core.endGroup()
    } else {
       core.startGroup('Deploying input manifests')
-      await deploy.deploy(kubectl, manifests, DeploymentStrategy.CANARY)
+      await deploymentHelper.deployManifests(manifests, DeploymentStrategy.CANARY, kubectl, trafficSplitMethod)
       core.endGroup()
    }
 
