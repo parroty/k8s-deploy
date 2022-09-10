@@ -73,7 +73,7 @@ async function promoteCanary(kubectl: Kubectl, manifests: string[]) {
       core.endGroup()
 
       core.startGroup('Deploying input manifests with SMI canary strategy')
-      await deploymentHelper.deployManifests(manifests, DeploymentStrategy.CANARY, kubectl, trafficSplitMethod)
+      await deploymentHelper.deploy(kubectl, manifests, DeploymentStrategy.CANARY, trafficSplitMethod)
       core.endGroup()
 
       core.startGroup('Redirecting traffic to stable deployment')
@@ -84,7 +84,7 @@ async function promoteCanary(kubectl: Kubectl, manifests: string[]) {
       core.endGroup()
    } else {
       core.startGroup('Deploying input manifests')
-      await deploymentHelper.deployManifests(manifests, DeploymentStrategy.CANARY, kubectl, trafficSplitMethod)
+      await deploymentHelper.deploy(kubectl, manifests, DeploymentStrategy.CANARY, trafficSplitMethod)
       core.endGroup()
    }
 

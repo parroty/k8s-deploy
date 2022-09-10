@@ -40,6 +40,11 @@ import {
 } from '../utilities/githubUtils'
 import {getDeploymentConfig} from '../utilities/dockerUtils'
 
+export async function deploy(kubectl: Kubectl, manifestFilePaths: string[], deploymentStrategy: DeploymentStrategy, trafficSplitMethod: TrafficSplitMethod){
+   const updatedManifests = appendStableVersionLabelToResource(manifestFilePaths)
+   deployManifests(updatedManifests, deploymentStrategy, kubectl, trafficSplitMethod)
+}
+
 export async function deployManifests(
    files: string[],
    deploymentStrategy: DeploymentStrategy,
